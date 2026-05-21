@@ -5,30 +5,37 @@
 //  here, so the teacher should never need to touch React components.
 // ============================================================================
 
+import piskelHome from "@/assets/screenshots/piskel-home.png";
+import piskelEditorEmpty from "@/assets/screenshots/piskel-editor-empty.jpg";
+import piskelColorPicker from "@/assets/screenshots/piskel-color-picker.jpg";
+import piskelDrawing from "@/assets/screenshots/piskel-drawing.jpg";
+import scratchEditor from "@/assets/screenshots/scratch-editor.png";
+
 export type PhaseColor = "mint" | "lavender" | "peach";
 
-export interface VideoChapter {
-  title: string;
-  startSeconds: number;
-  description?: string;
-  bestPart?: boolean;
-}
-
-export interface LessonVideo {
-  youtubeId: string;
-  title: string;
-  chapters: VideoChapter[];
+export interface LessonImage {
+  src: string;
+  caption: string;
+  tilt?: "l" | "r" | "l-strong" | "r-strong";
 }
 
 export interface LessonStep {
   emoji?: string;
   title: string;
   body: string;
+  image?: LessonImage; // optional polaroid image rendered next to the step
 }
 
 export interface LessonCheckpoint {
   id: string;
   label: string;
+}
+
+export interface LessonMaterial {
+  emoji: string;
+  label: string;
+  url: string;
+  hint?: string;
 }
 
 export interface Lesson {
@@ -39,27 +46,30 @@ export interface Lesson {
   summary: string;       // short description for cards
   duration: string;      // "1h30"
   status: "ready" | "draft";  // "draft" → renders the friendly "em breve" page
-  intro?: {
-    video: LessonVideo;
-    text: string;
-  };
-  guided?: {
-    video: LessonVideo;
-    steps: LessonStep[];
+  materials?: LessonMaterial[];
+  understanding?: {
+    title: string;       // "Entendendo"
+    duration: string;    // e.g. "10 min"
+    markdown: string;    // full didactic text with inline source citations
+    images?: LessonImage[]; // polaroids interleaved in the section
   };
   handsOn?: {
     title: string;
+    duration: string;    // "50 min"
     instructions: string;
+    steps: LessonStep[];
     checkpoints: LessonCheckpoint[];
   };
   bonus?: {
     title: string;
+    duration: string;    // "15 min"
     description: string;
   };
   delivery?: {
     title: string;
+    duration: string;    // "15 min"
     description: string;
-    driveFolder?: string; // placeholder Drive link
+    driveFolder?: string;
   };
 }
 
@@ -87,84 +97,137 @@ const aula1: Lesson = {
     "Vamos abrir o Piskel pela primeira vez e desenhar um personagem pixel art do zero.",
   duration: "1h30",
   status: "ready",
-  intro: {
-    text:
-      "Hoje você vai criar o seu primeiríssimo personagem em pixel art! O Piskel é uma ferramenta gratuita que funciona direto no navegador — sem instalar nada. No fim da aula, você vai sair com um sprite salvo no seu computador, pronto para virar herói do seu jogo. Bora?",
-    video: {
-      youtubeId: "dQw4w9WgXcQ",
-      title: "Abertura — O que vamos fazer hoje",
-      chapters: [
-        { title: "Oi! O que é pixel art?", startSeconds: 0 },
-        { title: "Por que o Piskel?", startSeconds: 30 },
-        { title: "O que você vai criar hoje", startSeconds: 75, bestPart: true, description: "A parte mais legal — olha o personagem pronto!" },
-      ],
+  materials: [
+    {
+      emoji: "🔗",
+      label: "Piskel (editor online)",
+      url: "https://www.piskelapp.com/",
+      hint: "Abre direto no navegador",
     },
-  },
-  guided: {
-    video: {
-      youtubeId: "dQw4w9WgXcQ",
-      title: "Tutorial passo a passo — Seu primeiro sprite",
-      chapters: [
-        { title: "Abrindo o Piskel", startSeconds: 0 },
-        { title: "Escolhendo o tamanho do canvas (16×16)", startSeconds: 45 },
-        { title: "Ferramentas básicas: lápis, balde, borracha", startSeconds: 120 },
-        { title: "Pintando a cabeça", startSeconds: 210, bestPart: true, description: "Truque para o personagem ficar fofinho" },
-        { title: "Pintando o corpo", startSeconds: 320 },
-        { title: "Olhos e boca — dando vida", startSeconds: 420 },
-        { title: "Salvando como PNG", startSeconds: 540 },
-        { title: "Exportando GIF animado (bônus)", startSeconds: 620 },
-      ],
+    {
+      emoji: "📚",
+      label: "Documentação oficial",
+      url: "https://www.piskelapp.com/help",
+      hint: "Guia rápido do Piskel",
     },
-    steps: [
+    {
+      emoji: "🎥",
+      label: "Tutorial recomendado",
+      url: "https://www.youtube.com/results?search_query=piskel+tutorial+iniciante+portugues",
+      hint: "YouTube (link externo)",
+    },
+    {
+      emoji: "💾",
+      label: "Pasta da aula no Drive",
+      url: "#drive-aula-01",
+      hint: "Onde você vai salvar o sprite",
+    },
+    {
+      emoji: "⭐",
+      label: "Projeto-exemplo",
+      url: "#projeto-exemplo",
+      hint: "Sprite pronto pra referência",
+    },
+  ],
+  understanding: {
+    title: "Entendendo",
+    duration: "10 min",
+    markdown: `Antes de pôr a mão no mouse, bora entender três coisinhas que vão deixar a aula muito mais legal. Vai com calma — pode reler quantas vezes quiser.
+
+**O que é pixel art?** Pixel art é um estilo de arte digital feito com pequenos quadradinhos chamados *pixels*, cada um com uma cor sólida. Em vez de pintar com pincel "suave", o artista escolhe pixel por pixel — quase como montar um mosaico. Esse estilo nasceu nos anos 70 e 80 por causa das limitações dos computadores e videogames antigos, mas hoje muita gente usa por escolha estética ([Wikipédia — Pixel art](https://pt.wikipedia.org/wiki/Pixel_art)).
+
+**O que é um sprite?** Um *sprite* é uma imagem que representa um personagem, item ou elemento de um jogo — tipo o Mario, uma moeda, ou um cogumelo. Cada sprite é desenhado num pequeno espaço quadrado e depois o jogo desenha ele na tela na hora certa. Quando você juntar vários sprites parecidinhos um atrás do outro, dá pra fazer animação — é assim que o Mario "anda" ([MDN Web Docs — Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)).
+
+**Por que jogos famosos usam pixel art?** Não é só nostalgia! Pixel art é mais rápida de produzir, ocupa pouquíssimo espaço no computador e tem um charme que muita gente ama. Jogos modernos como *Stardew Valley*, *Celeste* e *Undertale* usam pixel art de propósito porque ela transmite emoção de um jeito único. E claro, clássicos como *Super Mario Bros.* e *Pokémon* viraram lenda exatamente por causa desse visual.
+
+**O que é o Piskel e por que a gente vai usar ele?** O Piskel é um editor de pixel art **gratuito, online e open source** — ou seja, ninguém precisa pagar e o código fonte está disponível pra qualquer um estudar ou melhorar ([site oficial do Piskel](https://www.piskelapp.com/), [Piskel no GitHub](https://github.com/piskelapp/piskel)). Ele funciona direto no navegador, sem instalar nada, e tem tudo que a gente precisa: lápis, balde de tinta, animação por frames, exportar como PNG ou GIF.
+
+**Canvas e resolução — o tamanho importa.** *Canvas* é o nome que dão pra "tela" onde você desenha. No mundo da pixel art, a gente mede o canvas em pixels: **16×16** significa 16 quadradinhos pra cada lado (256 pixels no total). O Mario do Nintendinho cabia num canvas de 16×16. Já o **32×32** tem mais espaço pra detalhe — é o tamanho que vamos usar hoje. Quanto maior o canvas, mais detalhes cabem, mas também mais trabalho dá ([MDN — Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)).
+
+**Por que aprender isso aqui antes de programar?** Porque todo jogo que você for fazer mais pra frente — seja no [Scratch](https://scratch.mit.edu/about), no Construct 3 ou no Roblox — vai precisar de personagens, inimigos e cenários. Se você sabe criar seus próprios sprites, seus jogos têm a sua cara. Ninguém mais no mundo vai ter um personagem igual ao seu.`,
+    images: [
       {
-        emoji: "🌐",
-        title: "Abrir o Piskel no navegador",
-        body: "Vai em piskelapp.com e clica no botão azul **Create Sprite**. Não precisa criar conta — pode usar como visitante mesmo.",
+        src: piskelHome,
+        caption: "Site do Piskel — note o sprite de exemplo (a alpaca!)",
+        tilt: "l",
       },
       {
-        emoji: "📐",
-        title: "Escolher o tamanho do canvas (16×16)",
-        body: "Pixel art clássica usa quadrados pequenos. Clica em **Resize** e coloca 16 de largura e 16 de altura. Esse é o tamanho dos sprites do Mario antigo!",
-      },
-      {
-        emoji: "🎨",
-        title: "Escolher a paleta de cores",
-        body: "No canto direito tem uma paletinha. Começa com 4 ou 5 cores — quanto menos cores, mais bonita fica a pixel art.",
-      },
-      {
-        emoji: "👤",
-        title: "Pintar a cabeça do personagem",
-        body: "Usa o lápis (atalho **P**) e pinta uma forma redondinha no topo do canvas. Pode ser uma cabeça humana, de bicho, robô... o que você quiser!",
-      },
-      {
-        emoji: "🦵",
-        title: "Pintar o corpo",
-        body: "Logo abaixo da cabeça, desenha o corpo. Lembra que cada quadradinho é um pixel — vai com calma!",
-      },
-      {
-        emoji: "👀",
-        title: "Adicionar olhos e boca",
-        body: "Dois pixelzinhos pretos para os olhos e um traço para a boca. Pronto, ele virou gente!",
-      },
-      {
-        emoji: "💾",
-        title: "Salvar como PNG",
-        body: "Clica em **Export** → **PNG** → **Download**. Salva na pasta da Aula 01 do seu computador.",
-      },
-      {
-        emoji: "✨",
-        title: "Exportar como GIF animado (opcional)",
-        body: "Se sobrar tempo, adiciona um segundo frame e exporta como GIF. Vai parecer que o personagem está se mexendo!",
+        src: scratchEditor,
+        caption: "Mais pra frente, esse personagem vai parar aqui no Scratch",
+        tilt: "r",
       },
     ],
   },
   handsOn: {
-    title: "Crie o seu personagem",
+    title: "Mão na massa — Crie o seu personagem",
+    duration: "50 min",
     instructions:
       "Agora é com você! Siga os passos no seu Piskel e marca cada item conforme for terminando. Pode pedir ajuda quando quiser.",
+    steps: [
+      {
+        emoji: "🌐",
+        title: "Abrir o Piskel no navegador",
+        body: "Vai em **piskelapp.com** e clica no botão azul **Create Sprite** no topo da página. Não precisa criar conta — pode usar como visitante mesmo.",
+        image: {
+          src: piskelHome,
+          caption: "Botão 'Create Sprite' no canto superior direito",
+          tilt: "r",
+        },
+      },
+      {
+        emoji: "📐",
+        title: "Conhecer o editor e escolher o tamanho do canvas (32×32)",
+        body: "Vai aparecer o editor com o canvas no meio. À direita tem o painel **Resize** — coloca **32** de largura e **32** de altura e clica em **Resize**. Esse é um tamanho ótimo pra começar.",
+        image: {
+          src: piskelEditorEmpty,
+          caption: "Editor com o canvas vazio pronto pra desenhar",
+          tilt: "l",
+        },
+      },
+      {
+        emoji: "🎨",
+        title: "Escolher a paleta de cores",
+        body: "No canto inferior direito tem a paleta. Clica num quadradinho de cor pra abrir o seletor. Começa com 4 ou 5 cores — quanto menos cores, mais bonita fica a pixel art!",
+        image: {
+          src: piskelColorPicker,
+          caption: "Color picker do Piskel — escolha cores com calma",
+          tilt: "r",
+        },
+      },
+      {
+        emoji: "👤",
+        title: "Pintar a cabeça do personagem",
+        body: "Usa o lápis (atalho **P**) e pinta uma forma redondinha no topo do canvas. Pode ser cabeça humana, de bicho, robô, alienígena... o que você quiser!",
+        image: {
+          src: piskelDrawing,
+          caption: "Pixel por pixel — o lápis é seu melhor amigo",
+          tilt: "l",
+        },
+      },
+      {
+        emoji: "🦵",
+        title: "Pintar o corpo",
+        body: "Logo abaixo da cabeça, desenha o corpo. Lembra que cada quadradinho conta — vai com calma e vai testando.",
+      },
+      {
+        emoji: "👀",
+        title: "Adicionar olhos e boca",
+        body: "Dois pixelzinhos pretos pros olhos e um traço pra boca. Pronto, ele virou gente! Pode adicionar sobrancelha, sardas, capacete... o céu é o limite.",
+      },
+      {
+        emoji: "💾",
+        title: "Salvar como PNG",
+        body: "Clica em **Export** no menu da esquerda → aba **PNG** → **Download**. Salva o arquivo na pasta **Aula 01** do seu computador.",
+      },
+      {
+        emoji: "✨",
+        title: "Exportar como GIF animado (opcional)",
+        body: "Se sobrar tempo, na barra de frames (esquerda) clica em **Duplicate** e mexe um pouquinho no segundo frame. Depois exporta como GIF — vai parecer que o personagem se mexe!",
+      },
+    ],
     checkpoints: [
       { id: "abri-piskel", label: "Abri o Piskel no navegador" },
-      { id: "criei-canvas", label: "Criei o canvas 16×16" },
+      { id: "criei-canvas", label: "Configurei o canvas 32×32" },
       { id: "escolhi-paleta", label: "Escolhi minha paleta de cores" },
       { id: "desenhei-cabeca", label: "Desenhei a cabeça do personagem" },
       { id: "desenhei-corpo", label: "Desenhei o corpo" },
@@ -174,14 +237,16 @@ const aula1: Lesson = {
   },
   bonus: {
     title: "Desafio extra — Troca de roupa",
+    duration: "15 min",
     description:
-      "Crie uma segunda versão do seu personagem com uma roupa diferente: pode ser de pijama, de super-herói, de explorador… Use a função **Duplicate frame** do Piskel para não começar do zero.",
+      "Crie uma segunda versão do seu personagem com uma roupa diferente: de pijama, de super-herói, de explorador… Use **Duplicate frame** no Piskel pra não começar do zero. Bônus do bônus: exporta como GIF e o personagem 'troca de roupa' sozinho!",
   },
   delivery: {
     title: "Entrega da aula",
+    duration: "15 min",
     description:
-      "Salve seu sprite (.png) na pasta **Aula 01 — Meu primeiro personagem** do Google Drive da turma. Manda também uma print para o professor!",
-    driveFolder: "https://drive.google.com/drive/folders/aula-01-placeholder",
+      "Salve seu sprite (.png) na pasta **Aula 01 — Meu primeiro personagem** do Google Drive da turma. Manda também uma print pro professor pelo grupo!",
+    driveFolder: "#drive-aula-01",
   },
 };
 

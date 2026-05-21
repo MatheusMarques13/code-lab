@@ -6,9 +6,9 @@ export default {
   theme: {
     extend: {
       borderRadius: {
-        lg: "1rem",      /* 16px cards */
-        md: "0.75rem",   /* 12px buttons */
-        sm: "0.5rem",    /* 8px */
+        lg: "0.625rem",    /* 10px sticky-note */
+        md: "0.5rem",      /* 8px buttons */
+        sm: "0.375rem",    /* 6px small pills */
       },
       colors: {
         background: "hsl(var(--background) / <alpha-value>)",
@@ -74,7 +74,24 @@ export default {
           foreground: "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
           border: "var(--sidebar-accent-border)"
         },
-        // Brand pastel tokens
+        // Sticky-note colors
+        sticky: {
+          yellow: "hsl(var(--sticky-yellow) / <alpha-value>)",
+          "yellow-soft": "hsl(var(--sticky-yellow-soft) / <alpha-value>)",
+          blue: "hsl(var(--sticky-blue) / <alpha-value>)",
+          "blue-soft": "hsl(var(--sticky-blue-soft) / <alpha-value>)",
+          lavender: "hsl(var(--sticky-lavender) / <alpha-value>)",
+          "lavender-soft": "hsl(var(--sticky-lavender-soft) / <alpha-value>)",
+          pink: "hsl(var(--sticky-pink) / <alpha-value>)",
+          "pink-soft": "hsl(var(--sticky-pink-soft) / <alpha-value>)",
+          mint: "hsl(var(--sticky-mint) / <alpha-value>)",
+          "mint-soft": "hsl(var(--sticky-mint-soft) / <alpha-value>)",
+        },
+        coral: {
+          DEFAULT: "hsl(var(--coral) / <alpha-value>)",
+          soft: "hsl(var(--coral-soft) / <alpha-value>)",
+        },
+        // Backwards-compat (used by existing components)
         mint: {
           DEFAULT: "hsl(var(--mint) / <alpha-value>)",
           soft: "hsl(var(--mint-soft) / <alpha-value>)",
@@ -97,6 +114,7 @@ export default {
       fontFamily: {
         sans: ["var(--font-sans)"],
         display: ["var(--font-display)"],
+        hand: ["var(--font-hand)"],
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
       },
