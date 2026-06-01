@@ -82,10 +82,10 @@
   --peach-soft: 50 100% 92%;
 
   --font-sans: 'Nunito', system-ui, sans-serif;
-  --font-display: 'Architects Daughter', 'Shadows Into Light Two', cursive;
-  --font-hand: 'Shadows Into Light Two', 'Architects Daughter', cursive;
+  --font-display: 'Bricolage Grotesque', 'Nunito', system-ui, sans-serif;
+  --font-hand: 'Bricolage Grotesque', 'Nunito', sans-serif;
   --font-serif: 'Nunito', serif;
-  --font-mono: 'Architects Daughter', monospace;
+  --font-mono: 'Bricolage Grotesque', monospace;
 
   --radius: 0.625rem; /* 10px — small sticky-note corners */
 
@@ -250,8 +250,9 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    letter-spacing: 0.01em;
-    font-weight: 400;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    font-variation-settings: "opsz" 96;
   }
 
   @media (prefers-reduced-motion: reduce) {
