@@ -394,6 +394,18 @@
   .markdown-paper ul { padding-left: 1.2em; margin-bottom: 14px; }
   .markdown-paper li { margin-bottom: 6px; }
 
+  /* Larger variant for main reading sections */
+  .markdown-paper-lg p {
+    font-size: 19px;
+    line-height: 1.75;
+    margin-bottom: 18px;
+  }
+  .markdown-paper-lg li { font-size: 19px; line-height: 1.65; margin-bottom: 10px; }
+  @media (min-width: 768px) {
+    .markdown-paper-lg p { font-size: 21px; line-height: 1.75; margin-bottom: 20px; }
+    .markdown-paper-lg li { font-size: 21px; line-height: 1.65; }
+  }
+
   .no-default-hover-elevate {}
   .no-default-active-elevate {}
 

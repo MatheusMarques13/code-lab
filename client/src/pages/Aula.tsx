@@ -28,7 +28,7 @@ function Polaroid({ image }: { image: LessonImage }) {
     image.tilt === "l-strong" ? "tilt-l-strong" :
     image.tilt === "r-strong" ? "tilt-r-strong" : "";
   return (
-    <figure className={`polaroid max-w-sm ${tiltClass}`}>
+    <figure className={`polaroid max-w-2xl ${tiltClass}`}>
       <img src={image.src} alt={image.caption} loading="lazy" />
       <figcaption>{image.caption}</figcaption>
     </figure>
@@ -154,12 +154,12 @@ export default function Aula() {
             )}
           </div>
           <h1
-            className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight"
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.05]"
             data-testid="text-lesson-title"
           >
             {lesson.title}
           </h1>
-          <p className="font-hand text-base sm:text-lg text-foreground/75 mt-3 max-w-3xl">
+          <p className="font-hand text-lg sm:text-xl md:text-2xl text-foreground/75 mt-4 max-w-3xl leading-snug">
             {lesson.summary}
           </p>
         </header>
@@ -205,7 +205,7 @@ export default function Aula() {
               >
                 <span className="pill-badge absolute top-4 right-4">Setup</span>
                 <BlockHeader emoji="🎒" title="Materiais da Aula" duration="" id="heading-materiais" />
-                <p className="font-hand text-base text-muted-foreground mt-2 mb-5 max-w-3xl">
+                <p className="font-hand text-lg sm:text-xl text-muted-foreground mt-3 mb-6 max-w-3xl leading-snug">
                   Tudo que você precisa pra essa aula. Abre antes de começar!
                 </p>
                 <ul className="grid gap-3 sm:grid-cols-2">
@@ -220,9 +220,9 @@ export default function Aula() {
                       >
                         <span className="text-2xl" aria-hidden>{m.emoji}</span>
                         <div className="min-w-0 flex-1">
-                          <p className="font-hand text-base font-semibold leading-tight">{m.label}</p>
+                          <p className="font-hand text-lg sm:text-xl font-semibold leading-tight">{m.label}</p>
                           {m.hint && (
-                            <p className="font-hand text-xs text-muted-foreground mt-0.5">{m.hint}</p>
+                            <p className="font-hand text-sm text-muted-foreground mt-1">{m.hint}</p>
                           )}
                         </div>
                         <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -267,7 +267,7 @@ export default function Aula() {
                   duration={lesson.understanding.duration}
                   id="heading-entendendo"
                 />
-                <div className="markdown-paper mt-5 max-w-3xl">
+                <div className="markdown-paper markdown-paper-lg mt-6 max-w-3xl">
                   <ReactMarkdown
                     components={{
                       a: ({ node, href, children, ...props }) => (
@@ -282,7 +282,7 @@ export default function Aula() {
                 </div>
 
                 {lesson.understanding.images && lesson.understanding.images.length > 0 && (
-                  <div className="mt-6 flex flex-wrap gap-6 justify-center">
+                  <div className="mt-8 flex flex-wrap gap-8 justify-center">
                     {lesson.understanding.images.map((img, i) => (
                       <Polaroid key={i} image={img} />
                     ))}
@@ -317,32 +317,37 @@ export default function Aula() {
                   duration={lesson.handsOn.duration}
                   id="heading-mao"
                 />
-                <p className="font-hand text-base text-muted-foreground mt-2 mb-6 max-w-3xl">
+                <p className="font-hand text-lg sm:text-xl text-muted-foreground mt-3 mb-7 max-w-3xl leading-snug">
                   {lesson.handsOn.instructions}
                 </p>
 
                 {/* Numbered steps with optional polaroid images */}
-                <ol className="grid gap-5">
+                <ol className="grid gap-7">
                   {lesson.handsOn.steps.map((step, i) => (
                     <li
                       key={i}
                       data-testid={`step-${i}`}
-                      className="rounded-lg border border-card-border bg-sticky-yellow-soft/40 p-5 grid sm:grid-cols-[48px_1fr_auto] gap-4 items-start"
+                      className="rounded-lg border border-card-border bg-sticky-yellow-soft/40 p-6 sm:p-7 grid sm:grid-cols-[64px_1fr] lg:grid-cols-[64px_1fr_auto] gap-5 items-start"
                     >
-                      <div className="h-12 w-12 rounded-lg bg-sticky-pink flex items-center justify-center font-display text-xl font-semibold text-foreground">
+                      <div className="h-16 w-16 rounded-lg bg-sticky-pink flex items-center justify-center font-display text-3xl font-semibold text-foreground">
                         {i + 1}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-display font-semibold text-xl flex items-center gap-2 leading-tight">
+                        <h3 className="font-display font-semibold text-2xl sm:text-3xl flex items-center gap-2 leading-tight">
                           {step.emoji && <span aria-hidden>{step.emoji}</span>}
                           {step.title}
                         </h3>
-                        <div className="font-hand text-base text-foreground/80 mt-2 leading-relaxed">
+                        <div className="font-hand text-lg sm:text-xl text-foreground/85 mt-3 leading-relaxed">
                           <ReactMarkdown>{step.body}</ReactMarkdown>
                         </div>
+                        {step.image && (
+                          <div className="mt-5 lg:hidden flex justify-center">
+                            <Polaroid image={step.image} />
+                          </div>
+                        )}
                       </div>
                       {step.image && (
-                        <div className="sm:max-w-[220px] mx-auto sm:mx-0">
+                        <div className="hidden lg:block lg:max-w-md">
                           <Polaroid image={step.image} />
                         </div>
                       )}
@@ -351,31 +356,31 @@ export default function Aula() {
                 </ol>
 
                 {/* Checkpoints */}
-                <div className="mt-8 rounded-lg border border-dashed border-card-border bg-sticky-pink-soft/40 p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="label-tiny text-coral">Checklist</p>
-                    <p className="font-hand text-sm text-muted-foreground" data-testid="text-checkpoint-progress">
+                <div className="mt-9 rounded-lg border border-dashed border-card-border bg-sticky-pink-soft/40 p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="label-tiny text-coral text-sm">Checklist</p>
+                    <p className="font-hand text-base text-muted-foreground" data-testid="text-checkpoint-progress">
                       {doneCheckpoints}/{totalCheckpoints}
                     </p>
                   </div>
-                  <ul className="space-y-2">
+                  <ul className="space-y-2.5">
                     {lesson.handsOn.checkpoints.map((cp) => {
                       const checked = checkpointSet.has(cp.id);
                       return (
                         <li key={cp.id}>
                           <label
-                            className="flex items-center gap-3 rounded-lg px-3 py-2.5 cursor-pointer hover-elevate bg-card border border-card-border"
+                            className="flex items-center gap-4 rounded-lg px-4 py-3.5 cursor-pointer hover-elevate bg-card border border-card-border"
                             data-testid={`checkpoint-${cp.id}`}
                           >
                             <Checkbox
                               checked={checked}
                               onCheckedChange={(v) => toggleCheckpoint(cp.id, !!v)}
-                              className="h-5 w-5"
+                              className="h-6 w-6"
                               data-testid={`checkbox-${cp.id}`}
                             />
                             <span
                               className={[
-                                "font-hand text-base",
+                                "font-hand text-lg sm:text-xl",
                                 checked ? "line-through text-muted-foreground" : "",
                               ].join(" ")}
                             >
@@ -405,9 +410,9 @@ export default function Aula() {
                   duration={lesson.bonus.duration}
                   id="heading-desafio"
                 />
-                <div className="mt-3 flex gap-4 items-start">
-                  <Sparkles className="h-6 w-6 shrink-0 mt-1 text-coral" />
-                  <p className="font-hand text-base text-foreground/85">{lesson.bonus.description}</p>
+                <div className="mt-4 flex gap-4 items-start">
+                  <Sparkles className="h-7 w-7 shrink-0 mt-1 text-coral" />
+                  <p className="font-hand text-lg sm:text-xl text-foreground/85 leading-snug">{lesson.bonus.description}</p>
                 </div>
               </section>
             )}
@@ -426,7 +431,7 @@ export default function Aula() {
                   duration={lesson.delivery.duration}
                   id="heading-entrega"
                 />
-                <p className="font-hand text-base text-foreground/80 mt-3 max-w-3xl">
+                <p className="font-hand text-lg sm:text-xl text-foreground/85 mt-4 max-w-3xl leading-snug">
                   {lesson.delivery.description}
                 </p>
                 {lesson.delivery.driveFolder && (
@@ -517,8 +522,8 @@ export default function Aula() {
 function BlockHeader({ emoji, title, duration, id }: { emoji: string; title: string; duration: string; id: string }) {
   return (
     <div className="flex items-center gap-3 flex-wrap">
-      <h2 id={id} className="font-display text-2xl sm:text-3xl font-semibold flex items-center gap-2">
-        <span aria-hidden className="text-2xl">{emoji}</span>
+      <h2 id={id} className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold flex items-center gap-3 leading-tight">
+        <span aria-hidden className="text-3xl sm:text-4xl">{emoji}</span>
         {title}
       </h2>
       {duration && (
